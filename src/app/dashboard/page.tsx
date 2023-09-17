@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [videoUrl , setVideoUrl] = useState('');
   const childEmiter = (childData :any )=>{
     // console.log("Emit from child",childData);
-    let correctURL = childData.split('?v=')[1].split("").splice(0,11).join("");
+    let correctURL = (childData.includes('?v='))  ? childData.split('?v=')[1].split("").splice(0,11).join("") : childData.split('.be/')[1].split("").splice(0,11).join("");
     setVideoUrl("https://www.youtube.com/embed/" + correctURL);
   }
   return (
