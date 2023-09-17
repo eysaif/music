@@ -6,7 +6,7 @@ import Footer from "../components/footer/Footer";
 import Card from "../components/card/Card";
 import Dialog from "../components/dialog/Dialog";
  
-const dashboard = () => {
+const Dashboard = () => {
   const [videoUrl , setVideoUrl] = useState('');
   const childEmiter = (childData :any )=>{
     // console.log("Emit from child",childData);
@@ -32,4 +32,4 @@ const dashboard = () => {
   );
 };
 
-export default dashboard;
+export default Dashboard;
