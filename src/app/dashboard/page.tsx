@@ -7,8 +7,8 @@ import Card from "../components/card/Card";
 import Dialog from "../components/dialog/Dialog";
  
 const dashboard = () => {
-  const [videoUrl , setVideoUrl] = useState();
-  const childEmiter = (childData)=>{
+  const [videoUrl , setVideoUrl] = useState('');
+  const childEmiter = (childData :any )=>{
     // console.log("Emit from child",childData);
     let correctURL = childData.split('?v=')[1].split("").splice(0,11).join("");
     setVideoUrl("https://www.youtube.com/embed/" + correctURL);

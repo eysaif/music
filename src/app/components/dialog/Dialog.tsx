@@ -2,24 +2,25 @@
 
 import React, { useState } from "react";
 
-const Dialog = (props) => {
-  const { childEmiter } = {...props};
-  const [newVideoUrl , setnewVideoUrl] = useState(); 
-  const handleInput = event =>{
-    setnewVideoUrl(event.target.value);
-  }
+type props = {
+  childEmiter: (event: String) => void;
+};
 
-  const addVideo = ()=>{
-    childEmiter(newVideoUrl);
+const Dialog = ({ childEmiter }: props) => {
+  const [newVideoUrl, setnewVideoUrl] = useState("");
+  const handleInput = (event :any) => {
+    setnewVideoUrl(event.target.value);
+  };
+
+  const OpenDialog = () => {
+    const model: any = document.getElementById("my_modal_1");
+    model.showModal();
   };
 
   return (
     <>
       <div>
-        <button
-          className="btn btn-success"
-          onClick={() => document.getElementById("my_modal_1").showModal()}
-        >
+        <button className="btn btn-success" onClick={OpenDialog}>
           + Video
         </button>
 
@@ -39,7 +40,12 @@ const Dialog = (props) => {
             <div className="modal-action flex justify-between">
               <form method="dialog">
                 {/* if there is a button in form, it will close the modal */}
-                <button className="btn btn-accent m-1" onClick={addVideo}>Add</button>
+                <button
+                  className="btn btn-accent m-1"
+                  onClick={() => childEmiter(newVideoUrl)}
+                >
+                  Add
+                </button>
                 <button className="btn m-1">Close</button>
               </form>
             </div>
