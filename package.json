@@ -24,6 +24,7 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@types/mongodb": "^4.0.7",
     "daisyui": "^3.7.4"
   }
 }
