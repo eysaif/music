@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import  { connectToDatabase }    from "../lib/mongodb";
 
-export async function GET(response:NextResponse) {
+export async function GET() {
   let db = await connectToDatabase();
   const ytvideos = await db.db.collection("ytvideos").find().toArray();
   return NextResponse.json( {message: ytvideos});
