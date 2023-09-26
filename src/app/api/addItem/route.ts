@@ -4,7 +4,7 @@ import  { connectToDatabase }    from "../lib/mongodb";
 export async function GET() {
   let db = await connectToDatabase();
   const ytvideos = await db.db.collection("ytvideos").find().toArray();
-  return NextResponse.json( {message: ytvideos});
+  return NextResponse.json({playlistData:ytvideos});
 }
 
 export async function POST(request: Request) {

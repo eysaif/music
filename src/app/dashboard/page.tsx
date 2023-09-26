@@ -8,7 +8,12 @@ import Dialog from "../components/dialog/Dialog";
 
 const Dashboard = () => {
   const [videoUrl, setVideoUrl] = useState("");
-  const [playlists, setplaylists] = useState([]);
+  const [playlists, setplaylists] = useState([
+    { key: 1, value: "General" },
+    { key: 2, value: "Favorite" },
+    { key: 3, value: "Custom" },
+  ]);
+  const [playlistData, setplaylistData] = useState([]);
   const [themeValue, setthemeValue] = useState("cupcake");
   const childEmiter = (childData: any) => {
     // console.log("Emit from child",childData);
@@ -18,7 +23,11 @@ const Dashboard = () => {
     setVideoUrl("https://www.youtube.com/embed/" + correctURL);
 
     try {
-      const data = {videoUrl: `https://www.youtube.com/embed/${correctURL}`,playlist:"General",thumbnail:`https://img.youtube.com/vi/${correctURL}/0.jpg`}
+      const data = {
+        videoUrl: `https://www.youtube.com/embed/${correctURL}`,
+        playlist: "General",
+        thumbnail: `https://img.youtube.com/vi/${correctURL}/0.jpg`,
+      };
       const response = fetch(`/api/addItem`, {
         method: "POST", // or 'PUT'
         headers: {
@@ -31,13 +40,17 @@ const Dashboard = () => {
     }
   };
 
+  const changeVedio = (url: string) => {
+    console.log(url);
+    setVideoUrl(url);
+  };
   useEffect(() => {
-    const URL = `/api/playlist`;
-    fetch(URL)
-      .then((data) => data.json())
-      .then((response) => {
-        setplaylists(response);
-      });
+    // const URL = `/api/playlist`;
+    // fetch(URL)
+    //   .then((data) => data.json())
+    //   .then((response) => {
+    //     setplaylists(response);
+    //   });
   }, []);
   const UpdateTheme = () => {
     themeValue == "halloween"
@@ -45,6 +58,16 @@ const Dashboard = () => {
       : setthemeValue("halloween");
     console.log(themeValue);
   };
+
+  useEffect(() => {
+    const URL = `/api/addItem`;
+    fetch(URL)
+      .then((data) => data.json())
+      .then((response) => {
+        setplaylistData(response.playlistData);
+      });
+  }, []);
+
   return (
     <>
       <div data-theme={themeValue}>
@@ -52,15 +75,35 @@ const Dashboard = () => {
         <main className="flex m-2  flex-col gap-2 h-screen">
           <Dialog childEmiter={childEmiter} />
           <select className="select select-bordered w-full max-w-xs">
-            <option  disabled>
-              Your Playlist
-            </option>
+            <option disabled>Your Playlist</option>
             {playlists &&
               playlists.map((item: any) => {
                 return <option key={item.key}>{item.value}</option>;
               })}
           </select>
           <Card vedioUrl={videoUrl} />
+
+          <div className="stats stats-vertical shadow">
+            {playlistData &&
+              playlistData.map((item: any) => {
+                let divstyle = {
+                  backgroundImage: "url(" + item.thumbnail + ")",
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  cursor: "pointer",
+                };
+                return (
+                  <div
+                    key={item._id}
+                    className="stat"
+                    style={divstyle}
+                    onClick={() => {
+                      changeVedio(item.videoUrl);
+                    }}
+                  ></div>
+                );
+              })}
+          </div>
         </main>
         {/* <Footer /> */}
       </div>
