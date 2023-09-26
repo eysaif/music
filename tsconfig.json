@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components/dialog/Dialog.tsx", "src/app/components/card/Card.tsx", "src/app/dashboard/page.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components/dialog/Dialog.tsx", "src/app/components/card/Card.tsx", "src/app/dashboard/page.tsx", "src/app/api/lib/mongodb.ts"],
   "exclude": ["node_modules"]
 }
