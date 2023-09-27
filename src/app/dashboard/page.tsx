@@ -8,6 +8,7 @@ import Dialog from "../components/dialog/Dialog";
 
 const Dashboard = () => {
   const [videoUrl, setVideoUrl] = useState("");
+  const [loading, setloading] = useState(true);
   const [playlists, setplaylists] = useState([
     { key: 1, value: "General" },
     { key: 2, value: "Favorite" },
@@ -21,7 +22,7 @@ const Dashboard = () => {
       ? childData.split("?v=")[1].split("").splice(0, 11).join("")
       : childData.split(".be/")[1].split("").splice(0, 11).join("");
     setVideoUrl("https://www.youtube.com/embed/" + correctURL);
-
+    setloading(true);
     try {
       const data = {
         videoUrl: `https://www.youtube.com/embed/${correctURL}`,
@@ -35,6 +36,7 @@ const Dashboard = () => {
         },
         body: JSON.stringify(data),
       });
+      getUpdatedList();
     } catch (error) {
       console.error("Error:", error);
     }
@@ -58,14 +60,17 @@ const Dashboard = () => {
       : setthemeValue("halloween");
     console.log(themeValue);
   };
-
-  useEffect(() => {
+  const getUpdatedList = () => {
     const URL = `/api/addItem`;
     fetch(URL)
       .then((data) => data.json())
       .then((response) => {
+        setloading(false);
         setplaylistData(response.playlistData);
       });
+  };
+  useEffect(() => {
+    getUpdatedList();
   }, []);
 
   return (
@@ -82,10 +87,12 @@ const Dashboard = () => {
               })}
           </select>
           <Card vedioUrl={videoUrl} />
-
           <div className="stats stats-vertical shadow">
-            {playlistData &&
-              playlistData.map((item: any) => {
+            {loading ? (
+              <span className="loading loading-ring loading-lg"></span>
+            ) : (
+              playlistData &&
+              playlistData.map((item: any, index: number) => {
                 let divstyle = {
                   backgroundImage: "url(" + item.thumbnail + ")",
                   backgroundSize: "contain",
@@ -93,16 +100,44 @@ const Dashboard = () => {
                   cursor: "pointer",
                 };
                 return (
-                  <div
-                    key={item._id}
-                    className="stat"
-                    style={divstyle}
-                    onClick={() => {
-                      changeVedio(item.videoUrl);
-                    }}
-                  ></div>
+                  <div className="card card-side   shadow-xl" key={item._id}>
+                    <figure>
+                      <img src={item.thumbnail} alt="Movie" />
+                    </figure>
+                    <div className="card-body">
+                      {/* <h2 className="card-title">{index + 1}</h2>
+                      <p>Please click to play this video</p> */}
+                      <div className="card-actions justify-center">
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => {
+                            changeVedio(item.videoUrl);
+                          }}
+                        >
+                          Watch {index + 1 }
+                        </button>
+                        <button className="btn btn-error btn-outline  ">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 );
-              })}
+              })
+            )}
           </div>
         </main>
         {/* <Footer /> */}
