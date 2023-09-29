@@ -65,8 +65,8 @@ const Dashboard = () => {
     fetch(URL)
       .then((data) => data.json())
       .then((response) => {
-        setloading(false);
         setplaylistData(response.playlistData);
+        setloading(false);
       });
   };
   useEffect(() => {
@@ -74,6 +74,7 @@ const Dashboard = () => {
   }, []);
 
   const DeleteItem = (id: string) => {
+    setloading(true);
     try {
       const data = {
         _id: id,
@@ -106,9 +107,11 @@ const Dashboard = () => {
               })}
           </select>
           <Card vedioUrl={videoUrl} />
-          <div className="stats stats-vertical shadow" >
+          <div className="stats stats-vertical shadow " >
             {loading ? (
+              <div className="flex min-h-max justify-center items-center">
               <span className="loading loading-ring loading-lg"></span>
+              </div>
             ) : (
               playlistData &&
               playlistData.map((item: any, index: number) => {
@@ -126,17 +129,17 @@ const Dashboard = () => {
                     <div className="flex justify-center mt-4">
                       {/* <h2 className="card-title">{index + 1}</h2>
                       <p>Please click to play this video</p> */}
-                      <div className="card-actions justify-center">
+                      <div className="card-actions justify-center items-center">
                         <button
-                          className="btn btn-primary "
+                          className="btn btn-primary btn-sm"
                           onClick={() => {
                             changeVedio(item.videoUrl);
                           }}
                         >
-                          play {index + 1}
+                          Watch {index + 1}
                         </button>
                         <button
-                          className="btn btn-error btn-outline"
+                          className="btn btn-sm btn-error btn-outline"
                           onClick={() => {
                             DeleteItem(item._id);
                           }}
