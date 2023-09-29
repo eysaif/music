@@ -73,6 +73,25 @@ const Dashboard = () => {
     getUpdatedList();
   }, []);
 
+  const DeleteItem = (id: string) => {
+    try {
+      const data = {
+        _id: id,
+      };
+      fetch(`/api/addItem`, {
+        method: "DELETE", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then(()=>{
+        getUpdatedList();
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <>
       <div data-theme={themeValue}>
@@ -87,7 +106,7 @@ const Dashboard = () => {
               })}
           </select>
           <Card vedioUrl={videoUrl} />
-          <div className="stats stats-vertical shadow">
+          <div className="stats stats-vertical shadow" >
             {loading ? (
               <span className="loading loading-ring loading-lg"></span>
             ) : (
@@ -100,23 +119,28 @@ const Dashboard = () => {
                   cursor: "pointer",
                 };
                 return (
-                  <div className="card card-side   shadow-xl" key={item._id}>
-                    <figure>
-                      <img src={item.thumbnail} alt="Movie" />
+                  <div className="card card-side shadow-xl mb-1" style={{height:"150px"}} key={item._id}>
+                    <figure >
+                      <img style={{width:'70%',height:"auto"}} src={item.thumbnail} alt="Movie" />
                     </figure>
-                    <div className="card-body">
+                    <div className="flex justify-center mt-4">
                       {/* <h2 className="card-title">{index + 1}</h2>
                       <p>Please click to play this video</p> */}
                       <div className="card-actions justify-center">
                         <button
-                          className="btn btn-primary"
+                          className="btn btn-primary "
                           onClick={() => {
                             changeVedio(item.videoUrl);
                           }}
                         >
-                          Watch {index + 1 }
+                          play {index + 1}
                         </button>
-                        <button className="btn btn-error btn-outline  ">
+                        <button
+                          className="btn btn-error btn-outline"
+                          onClick={() => {
+                            DeleteItem(item._id);
+                          }}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6"
