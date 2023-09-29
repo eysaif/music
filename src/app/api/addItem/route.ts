@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   let db = await connectToDatabase();
   const { _id } = await request.json();
-  let id = new ObjectId(_id); 
+  let id:any = new ObjectId(_id); 
   const deletedItem = await db.db.collection("ytvideos").deleteMany({_id: id});
   return NextResponse.json( {message: 'Successfully Deleted'});
 }
