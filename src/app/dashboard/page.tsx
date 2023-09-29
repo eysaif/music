@@ -107,7 +107,7 @@ const Dashboard = () => {
               })}
           </select>
           <Card vedioUrl={videoUrl} />
-          <div className="stats stats-vertical shadow " >
+          <div className="stats stats-vertical shadow" >
             {loading ? (
               <div className="flex min-h-max justify-center items-center">
               <span className="loading loading-ring loading-lg"></span>
